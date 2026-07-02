@@ -154,6 +154,7 @@ const getInitialState = () => ({
   industrialBoomActive: false, // Efek khusus Industri
   rumorCountRemaining: 0, // Sisa klik rumor untuk User
   rumorSelectedSector: null, // Sektor rumor terpilih
+  quickBuyCountRemaining: 0, // Sisa kartu untuk Quick Buy User
   logs: [], // Riwayat aksi game
   lastEvent: null // Event penting (Split/Crash) untuk notifikasi pop-up
 });
@@ -535,15 +536,28 @@ export const useGameStore = create((set, get) => {
           }
         });
 
-        if (availableCards.length < 2) {
-          get().addLog(`${players[playerKey].name} mencoba memakai Quick Buy tetapi tidak ada cukup kartu di meja.`);
+        const cardsToTakeCount = Math.min(2, availableCards.length);
+
+        if (cardsToTakeCount === 0) {
+          get().addLog(`${players[playerKey].name} menggunakan Quick Buy tetapi tidak ada kartu sisa di meja.`);
           get().save();
           get().nextPlayerAction();
           return;
         }
 
+        if (playerKey === 'user') {
+          // User: set status quick buy aktif untuk interaksi UI
+          set({
+            quickBuyCountRemaining: cardsToTakeCount
+          });
+          get().addLog(`User menggunakan Skill Quick Buy: Silakan pilih ${cardsToTakeCount} kartu gratis dari meja.`);
+          get().save();
+          return;
+        }
+
+        // Bot AI: otomatis ambil kartu pertama & kedua yang tersedia
         const target1 = availableCards[0];
-        const target2 = availableCards[1];
+        const target2 = cardsToTakeCount > 1 ? availableCards[1] : null;
 
         set((state) => {
           const updatedPlayers = JSON.parse(JSON.stringify(state.players));
@@ -551,9 +565,11 @@ export const useGameStore = create((set, get) => {
           const newBoard = [...state.actionBoard];
 
           newBoard[target1.index] = null;
-          newBoard[target2.index] = null;
+          if (target2) {
+            newBoard[target2.index] = null;
+          }
 
-          [target1.card, target2.card].forEach(c => {
+          [target1.card, target2?.card].filter(Boolean).forEach(c => {
             if (c.sector === 'ReksaDana') {
               p.mutualFunds += 1;
             } else {
@@ -561,11 +577,15 @@ export const useGameStore = create((set, get) => {
             }
           });
 
+          const chosenNames = target2 
+            ? `${target1.card.name}, ${target2.card.name}`
+            : `${target1.card.name}`;
+
           return {
             players: updatedPlayers,
             actionBoard: newBoard,
             logs: [
-              `${p.name} menggunakan Skill Quick Buy: menarik gratis 2 saham dari meja (${target1.card.name}, ${target2.card.name}) dan mengakhiri gilirannya.`
+              `${p.name} menggunakan Skill Quick Buy: menarik gratis ${cardsToTakeCount} saham dari meja (${chosenNames}) dan mengakhiri gilirannya.`
             ].concat(state.logs)
           };
         });
@@ -692,6 +712,64 @@ export const useGameStore = create((set, get) => {
         }
         return { rumorCountRemaining: remaining, logs };
       });
+      get().save();
+    },
+
+    // Eksekusi Pemilihan Kartu untuk Quick Buy oleh User
+    executeQuickBuySelection: (cardIndex) => {
+      const { actionBoard, quickBuyCountRemaining } = get();
+      if (quickBuyCountRemaining <= 0) return;
+      const card = actionBoard[cardIndex];
+      if (!card) return;
+
+      set((state) => {
+        const updatedPlayers = JSON.parse(JSON.stringify(state.players));
+        const p = updatedPlayers.user;
+        const newBoard = [...state.actionBoard];
+
+        newBoard[cardIndex] = null;
+
+        if (card.sector === 'ReksaDana') {
+          p.mutualFunds += 1;
+        } else {
+          p.stocks[card.sector] = (p.stocks[card.sector] || 0) + 1;
+        }
+
+        const remaining = state.quickBuyCountRemaining - 1;
+        const logs = [`User mengambil kartu ${card.name} secara gratis dari meja menggunakan Quick Buy.`].concat(state.logs);
+
+        if (remaining <= 0) {
+          setTimeout(() => {
+            const boardIsEmptyNow = get().actionBoard.every(c => c === null);
+            if (boardIsEmptyNow) {
+              set({ phase: 'SELL', activePlayerIndex: 0 });
+              get().addLog('Meja aksi kosong. Fase Aksi selesai awal. Memasuki Fase 3: Jual Saham.');
+              get().save();
+              const { playOrder } = get();
+              const firstPlayerKey = playOrder[0];
+              if (firstPlayerKey !== 'user') {
+                setTimeout(() => get().runBotSell(), 1000);
+              }
+            } else {
+              get().nextPlayerAction();
+            }
+          }, 800);
+          return {
+            players: updatedPlayers,
+            actionBoard: newBoard,
+            quickBuyCountRemaining: 0,
+            logs
+          };
+        }
+
+        return {
+          players: updatedPlayers,
+          actionBoard: newBoard,
+          quickBuyCountRemaining: remaining,
+          logs
+        };
+      });
+
       get().save();
     },
 

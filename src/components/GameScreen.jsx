@@ -108,6 +108,7 @@ export default function GameScreen() {
     logs,
     lastEvent,
     rumorCountRemaining,
+    quickBuyCountRemaining,
     resetToHome
   } = store;
 
@@ -282,6 +283,18 @@ export default function GameScreen() {
   const renderActionView = () => {
     return (
       <div className="w-full flex flex-col gap-4 animate-fade-in items-center">
+        {quickBuyCountRemaining > 0 && (
+          <div className="bg-[#D4A24C]/15 border border-[#D4A24C] rounded-2xl p-4 text-center max-w-md w-full animate-bounce shadow-md">
+            <div className="flex items-center justify-center gap-2 text-[#D4A24C]">
+              <span className="material-symbols-outlined text-xl">shopping_cart</span>
+              <h4 className="font-outfit text-sm font-bold uppercase">Mode Quick Buy Aktif</h4>
+            </div>
+            <p className="font-inter text-xs text-[#9C9884] mt-1 leading-normal">
+              Silakan pilih <strong>{quickBuyCountRemaining} kartu</strong> lagi dari meja secara gratis!
+            </p>
+          </div>
+        )}
+
         {/* Carousel Container (Fan/Overlap Layout) */}
         <div className="w-full overflow-x-auto hide-scrollbar pb-6 pt-4 px-2 flex justify-start md:justify-center items-center min-h-[290px]">
           <div className="flex justify-center items-center mx-auto">
@@ -319,8 +332,12 @@ export default function GameScreen() {
                   key={idx}
                   onClick={() => {
                     if (isUserTurn) {
-                      setSelectedCardIndex(idx);
-                      setShowCardDetailModal(true);
+                      if (quickBuyCountRemaining > 0) {
+                        store.executeQuickBuySelection(idx);
+                      } else {
+                        setSelectedCardIndex(idx);
+                        setShowCardDetailModal(true);
+                      }
                     }
                   }}
                   className={`w-32 h-52 md:w-40 md:h-60 bg-[#1C1E17] p-1 rounded-2xl shadow-[0_8px_20px_rgba(0,0,0,0.5)] flex flex-col border border-[#262920] transition-all duration-300 cursor-pointer select-none relative -mx-2 md:-mx-3 z-20 ${
