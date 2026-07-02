@@ -1,5 +1,3 @@
-Berikut adalah berkas **`README.md`** yang telah disesuaikan secara khusus untuk proyek **InvestLab**. Anda bisa langsung menyalin konten di bawah ini:
-
 ```markdown
 # 📈 InvestLab - Capital Market Simulation Game
 
@@ -102,4 +100,3 @@ Di akhir Ronde 6, seluruh aset Anda akan dilikuidasi otomatis berdasarkan harga 
 $$\text{Net Worth} = \text{Total Kas} + (\text{Saham Sektor} \times \text{Harga Penutupan}) + (\text{Reksa Dana} \times \text{Harga Penutupan}) - (\text{Kartu Utang} \times 15)$$
 
 Setiap kartu utang (🔴) yang tersisa akan mengurangi skor akhir Anda sebesar **15 Koin**.
-```
