@@ -1,0 +1,75 @@
+                  <option value="Consumer">Consumer</option>
+                </select>
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                store.useSkill('user', selectedSkillCardIndex, {
+                  sector: akuisisiSector,
+                  targetPlayer: akuisisiTarget
+                });
+                setShowAkuisisiModal(false);
+              }}
+              className="bg-primary text-on-primary font-label-bold py-2 rounded-lg hover:bg-primary/95 transition-all mt-2 text-xs"
+            >
+              Eksekusi Akuisisi
+            </button>
+            <button
+              onClick={() => setShowAkuisisiModal(false)}
+              className="mt-2 bg-surface-variant text-on-surface font-label-bold py-2 rounded-lg hover:bg-surface-bright text-xs"
+            >
+              Batal
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Sub-render untuk grid harga bursa (Ronde/Bidding)
+function renderSectorPricesGrid() {
+  const prices = useGameStore((state) => state.prices);
+  const priceHistories = useGameStore((state) => state.priceHistories);
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-xs">
+      {Object.keys(SECTOR_CONFIG).map((key) => {
+        const config = SECTOR_CONFIG[key];
+        const price = prices[key];
+        const history = priceHistories[ke
+<truncated 3491 bytes>
+:         return (
+          <div 
+            key={playerKey}
+            className={`p-xs rounded-xl border flex justify-between items-center transition-all duration-300 relative overflow-hidden ${
+              isActive 
+                ? 'bg-primary-container/20 border-primary shadow-md' 
+                : 'bg-surface-container-high border-outline-variant/20'
+            }`}
+          >
+            {isActive && (
+              <div className="absolute top-0 right-0 bg-primary text-white text-[6px] md:text-[8px] font-bold px-1.5 py-0.5 rounded-bl-md z-10 animate-pulse uppercase">
+                TURN
+              </div>
+            )}
+            <div className="flex items-center gap-xs">
+              <div className={`w-8 h-8 rounded-full overflow-hidden border ${isActive ? 'border-primary' : 'border-outline-variant/30'}`}>
+                <img alt={player.name} className="w-full h-full object-cover" src={getAvatarSrcLocal(playerKey)} />
+              </div>
+              <div className="hidden sm:block">
+                <span className="font-label-bold text-[10px] text-on-surface block leading-tight font-bold">{player.name}</span>
+                <span className="text-[8px] text-on-surface-variant uppercase">Utang: {player.debtCards}</span>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="font-headline-md text-xs md:text-sm text-tertiary font-mono font-bold block">{player.coins}🪙</span>
+              <span className="text-[8px] text-on-surface-variant uppercase leading-none block sm:hidden">Utang: {player.debtCards}</span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}

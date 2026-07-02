@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>StockLab - Fase Ekonomi</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#00174b",
+                        "tertiary": "#ffb95f",
+                        "on-secondary-fixed": "#002113",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "secondary-container": "#00a572",
+                        "on-tertiary-container": "#ffeedd",
+                        "surface-container-lowest": "#0c0e16",
+                        "surface-container": "#1d1f27",
+                        "surface-bright": "#3
+<truncated 15085 bytes>
+-center gap-base transition-all active:translate-y-1 hover:bg-surface-container-high">
+                    <span class="material-symbols-outlined text-primary">call_split</span>
+                    <span class="font-label-bold text-label-bold text-primary uppercase">Stock Split</span>
+                </button>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Simple particle system for dramatic effect
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('main');
+            const particleCount = 20;
+
+            for (let i = 0; i < particleCount; i++) {
+                createParticle(container);
+            }
+
+            setInterval(() => {
+                createParticle(container);
+            }, 300);
+        });
+
+        function createParticle(container) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+
+            // Random properties
+            const size = Math.random() * 6 + 2;
+            const left = Math.random() * 100;
+            const top = 50 + Math.random() * 30; // Start mostly from bottom middle
+            const duration = Math.random() * 2 + 1;
+
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${left}%`;
+            particle.style.top = `${top}%`;
+            particle.style.animation = `particle-anim ${duration}s ease-in forwards`;
+
+            container.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, duration * 1000);
+        }
+    </script>
+</body>
+
+</html>

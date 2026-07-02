@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>StockLab - Splash Screen</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#00174b",
+                        "tertiary": "#ffb95f",
+                        "on-secondary-fixed": "#002113",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "secondary-container": "#00a572",
+                        "on-tertiary-container": "#ffeedd",
+                        "surface-container-lowest": "#0c0e16",
+                        "surface-container": "#1d1f27",
+                        "surface-bright": "#3
+<truncated 13350 bytes>
+ng) -->
+        <div class="w-full flex flex-col items-center gap-md mt-xl">
+            <!-- Prominent Start Button -->
+            <button
+                class="w-full py-sm px-lg rounded-xl bg-secondary-container text-on-secondary-container font-label-bold text-label-bold uppercase tracking-wider relative overflow-hidden pulse-button shadow-[0_8px_16px_rgba(0,0,0,0.4)] border-b-[4px] border-on-secondary-container/50 active:translate-y-[2px] active:border-b-[2px] active:mb-[2px] transition-all duration-100 flex items-center justify-center gap-xs group">
+                <div class="absolute top-0 left-0 right-0 h-1/2 glossy-overlay"></div>
+                <span class="relative z-10 group-active:scale-95 transition-transform">Mulai</span>
+                <span
+                    class="material-symbols-outlined relative z-10 text-[20px] group-active:scale-95 transition-transform group-hover:translate-x-1">play_arrow</span>
+            </button>
+            <!-- Loading Indicator -->
+            <div class="w-full flex flex-col gap-base mt-lg">
+                <div
+                    class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden shadow-inner border border-surface-bright">
+                    <div class="h-full bg-primary liquid-progress rounded-full shadow-[0_0_8px_rgba(180,197,255,0.5)]"
+                        style="animation: liquidFill 3s ease-out forwards;"></div>
+                </div>
+                <p
+                    class="font-label-sm text-label-sm text-on-surface-variant text-center uppercase tracking-widest animate-pulse">
+                    Loading assets...
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- No Navigation Shells as per Source of Truth: Linear/Transactional intent -->
+</body>
+
+</html>

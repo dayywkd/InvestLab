@@ -1,0 +1,51 @@
+# Rencana Implementasi: InvestLab (Web-Based StockLab Game) - APPROVED
+
+Mengubah visual HTML statis InvestLab (StockLab) menjadi permainan berbasis web Single Page Application (SPA) yang interaktif menggunakan React.js, Vite, Tailwind CSS, dan Zustand untuk manajemen state. Game ini akan mendukung mode Single Player melawan 2 AI Bot lokal dengan kepatuhan 100% pada mekanik kustom StockLab.
+
+---
+
+## Spesifikasi Sektor & Profil Risiko
+
+Setiap sektor memiliki profil risiko, batas harga (minimum/maksimum), efek batas, dan karakteristik crash/split yang unik:
+
+| Sektor | Harga Awal | Batas Min | Batas Max | Karakteristik Batas Atas | Karakteristik Crash |
+| :--- | :---: | :---: | :---: | :--- | :--- |
+| **Properti** | 5 | 2 | 12 | **Pasar Jenuh**: Harga terkunci di 12, tidak bisa naik lagi sampai ronde berikutnya. Split pada 12. | Harga reset ke **4**, seluruh saham pemain hangus. |
+| **Infrastruktur** | 5 | 1 | 15 | **Mega Project**: Memberikan bonus +1 koin dari Bank untuk setiap unit saham yang dimiliki pemain. Split pada 15. | Harga reset ke **3**, seluruh saham pemain hangus. |
+| **Industri** | 5 | 1 | 18 | **Industrial Boom**: Ronde berikutnya, seluruh efek kenaikan Industri mendapat +1 tambahan. Split pada 18. | Harga reset ke **2**, seluruh saham pemain hangus. |
+| **Consumer** | 5 | 0 | 20 | **Consumer Frenzy**: Setelah ronde berakhir, Consumer otomatis terkoreksi turun 3. Split pada 20. | **Delisting/Crash**: Jika menyentuh $\le 0$, harga reset ke **1** (atau kembali ke 5 
+<truncated 2989 bytes>
+.
+*   Instal dependency: `zustand`, `lucide-react`.
+*   Konfigurasi Tailwind CSS di dalam proyek Vite yang baru.
+
+### 2. Manajemen State Game (`src/store/useGameStore.js`) [NEW]
+*   Menampung seluruh logic permainan (Deck shuffling, Phase transitions, Turn & Player logic, AI behaviors).
+*   Menangani logika khusus batas atas (Pasar Jenuh, Mega Project, Industrial Boom, Consumer Frenzy).
+*   Menangani logika Split & Crash spesifik sektor.
+*   Logika utang (Denda -15 koin di akhir per unit utang, +10 koin saat didapatkan).
+*   Auto-Save & Resume melalui sinkronisasi state ke `localStorage`.
+
+### 3. Logika AI Bot [NEW]
+*   *Bidding AI*: Bot menaruh bid acak cerdas (misal: 10%-30% dari sisa koin).
+*   *Aksi AI*: Bot memilih kartu di meja secara cerdas (membeli saham jika harga rendah, mengambil skill jika menguntungkan).
+*   *Jual AI*: Bot menjual saham jika harga pasar tinggi (misal $\ge 12$).
+
+### 4. Komponen Antarmuka Pengguna (UI React) [NEW]
+*   Mengadopsi seluruh layout bento-box dan gaya cyber-fintech neon gelap dari template.
+*   Membuat view reaktif untuk masing-masing fase: `SplashScreen`, `MainMenu`, `GameLobby`, `PreparationView`, `BiddingView`, `ActionView`, `SellView`, `EconomyView`, `GameOverScreen`.
+*   Menambahkan animasi mikro (angka berputar, kartu meluncur, efek merah/hijau saat harga berfluktuasi).
+
+---
+
+## Verification Plan
+
+### Automated Tests
+*   Menjalankan dev server: `npm run dev`.
+*   Memasukkan logger state ke objek `window.gameStore` untuk debugging state.
+
+### Manual Verification
+*   Melakukan playtest 6 ronde penuh.
+*   Memverifikasi bahwa Stock Split melipatgandakan saham dan membagi dua harga.
+*   Memverifikasi bahwa Stock Crash menghapus saham dan mereset harga sesuai crash level masing-masing sektor.
+*   Memastikan auto-save dan load state berfungsi saat di-refresh.

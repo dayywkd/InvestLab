@@ -1,0 +1,54 @@
+import React, { useEffect } from 'react';
+import { useGameStore } from './store/useGameStore';
+import SplashScreen from './components/SplashScreen';
+import MainMenu from './components/MainMenu';
+import GameLobby from './components/GameLobby';
+import GameScreen from './components/GameScreen';
+import GameOverScreen from './components/GameOverScreen';
+
+function App() {
+  const phase = useGameStore((state) => state.phase);
+  const loadGame = useGameStore((state) => state.loadGame);
+  const resetToHome = useGameStore((state) => state.resetToHome);
+  const initGame = useGameStore((state) => state.initGame);
+
+  // Jalankan loadGame sekali saat pertama kali aplikasi dibuka
+  useEffect(() => {
+    loadGame();
+  }, [loadGame]);
+
+  return (
+    <>
+      {phase === 'SPLASH' && (
+        <SplashScreen onStart={resetToHome} />
+      )}
+      
+      {phase === 'HOME' && (
+        <MainMenu 
+          onPlay={() => useGameStore.setState({ phase: 'LOBBY' })} 
+          onResetState={resetToHome} 
+        />
+      )}
+      
+      {phase === 'LOBBY' && (
+        <GameLobby 
+          onStartGame={initGame} 
+          onBack={resetToHome} 
+        />
+      )}
+      
+      {(phase === 'PREPARATION' || phase === 'BIDDING' || phase === 'ACTION' || phase === 'SELL' || phase === 'ECONOMY') && (
+        <GameScreen />
+      )}
+      
+      {phase === 'GAMEOVER' && (
+        <GameOverScreen 
+          onPlayAgain={initGame} 
+          onBackToHome={resetToHome} 
+        />
+      )}
+    </>
+  );
+}
+
+export default App;

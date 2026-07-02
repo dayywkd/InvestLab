@@ -1,0 +1,67 @@
+import React from 'react';
+import { useGameStore } from '../store/useGameStore';
+
+export default function GameOverScreen({ onPlayAgain, onBackToHome }) {
+  const store = useGameStore();
+  const { players, prices } = store;
+
+  // Siapkan data pemain untuk pemeringkatan
+  const playerRankList = Object.keys(players).map(key => ({
+    key,
+    ...players[key]
+  }));
+
+  // Urutkan dari Net Worth tertinggi
+  playerRankList.sort((a, b) => (b.netWorth ?? b.coins) - (a.netWorth ?? a.coins));
+
+  const winner = playerRankList[0];
+  const userRank = playerRankList.findIndex(p => p.key === 'user') + 1;
+
+  // Rincian Aset User
+  const userCash = players.user.coins + (players.user.debtCards * 15); // kembalikan cash sebelum denda untuk breakdown
+  const userMutualFundsVal = players.user.mutualFunds * prices.ReksaDana;
+  const userDebtPenalty = players.user.debtCards * 15;
+  const userNetWorth = players.user.netWorth ?? 0;
+
+  return (
+    <div className="bg-background text-on-background min-h-screen flex flex-col items-center justify-center p-md md:p-margin-desktop relative overflow-hidden select-none w-full">
+      {/* Ambient FX */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-30">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-error/10 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-tertiary/10 rounded-full blur-[80px]"></div>
+      </div>
+<truncated 4342 bytes>
+flex items-center justify-center text-on-tertiary">
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>emoji_events</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-label-sm text-label-sm text-tertiary uppercase text-[9px]">Pemenang</span>
+              <span className="font-label-bold text-label-bold text-on-surface font-bold text-xs md:text-sm">{winner.name}</span>
+            </div>
+          </div>
+          <div className="font-headline-md text-headline-md text-on-surface font-mono">
+            {winner.netWorth ?? winner.coins} <span className="font-label-sm text-label-sm text-on-surface-variant">Coin</span>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex flex-col gap-sm mt-xs">
+          <button 
+            onClick={onPlayAgain}
+            className="w-full py-md px-lg rounded-lg border-2 border-primary text-primary font-label-bold text-label-bold uppercase tracking-wide hover:bg-primary/10 active:translate-y-0.5 transition-all flex items-center justify-center gap-xs text-xs py-3"
+          >
+            <span className="material-symbols-outlined text-[20px]">replay</span>
+            Main Lagi
+          </button>
+          <button 
+            onClick={onBackToHome}
+            className="w-full py-md px-lg rounded-lg bg-surface-container-high text-on-surface font-label-bold text-label-bold uppercase tracking-wide hover:bg-surface-bright active:translate-y-0.5 transition-all flex items-center justify-center gap-xs text-xs py-3"
+          >
+            <span className="material-symbols-outlined text-[20px]">home</span>
+            Kembali ke Menu Utama
+          </button>
+        </div>
+      </main>
+    </div>
+  );
+}

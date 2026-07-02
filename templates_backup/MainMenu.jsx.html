@@ -1,0 +1,64 @@
+import React, { useState } from 'react';
+
+export default function MainMenu({ onPlay, onResetState }) {
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+
+  return (
+    <div className="bg-background text-on-background font-body-md min-h-screen ambient-gradient overflow-x-hidden flex flex-col pb-24 md:pb-0 select-none">
+      {/* TopAppBar */}
+      <header className="w-full top-0 sticky z-50 bg-surface dark:bg-surface border-b-2 border-outline-variant shadow-md flex justify-between items-center px-md py-xs">
+        <div className="flex items-center gap-sm">
+          <div className="relative">
+            <img 
+              alt="Player Avatar" 
+              className="w-10 h-10 rounded-full border-2 border-primary object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuALkawrSaM4En-PcLF-VC0mEDk9fjU-AGLZ15qhJw97k_NJ1BCtzqw7MjTjqzhGl0ijmSF7fUnMqPIbxHINI1xEvHNtRONDOhsGi4-gSJXM34JnhkandnjqoFxY_HK0A0H_hmft6TVlHoLyMYLJL7sOoU4QpvFz0bmSp6NBiK41TRVroe9eTQZxmxSt4Vkke4zdKE3j0i7VB27DZRwpWArxfzfawguk8jNHf8CXe4dpyR4T_G53zceeWl0SVPqEfPDyZtXtvnmEhs8" 
+            />
+            <div className="absolute -bottom-1 -right-1 bg-tertiary text-on-tertiary-fixed text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-background">
+              Lv.42
+            </div>
+          </div>
+          <h1 className="font-display-lg text-[24px] text-primary uppercase t
+<truncated 13687 bytes>
+"
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Pengaturan Modal */}
+      {showSettings && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-md">
+          <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" onClick={() => setShowSettings(false)}></div>
+          <div className="relative bg-surface-container-high rounded-xl border border-white/10 p-lg shadow-2xl max-w-sm w-full flex flex-col z-50">
+            <h3 className="font-headline-md text-headline-md text-outline mb-sm uppercase border-b border-outline-variant pb-2">Pengaturan</h3>
+            <div className="py-4 space-y-md">
+              <p className="font-body-md text-on-surface-variant text-center text-sm">Setel ulang progress game atau bersihkan auto-save turn.</p>
+              <button 
+                onClick={() => {
+                  onResetState();
+                  setShowSettings(false);
+                  alert('Progres game berhasil di-reset!');
+                }}
+                className="w-full bg-error text-on-error font-label-bold py-2 rounded-lg hover:bg-error-container/80 transition-all flex items-center justify-center gap-xs text-sm"
+              >
+                <span className="material-symbols-outlined text-[18px]">delete_forever</span>
+                Reset Auto-Save Game
+              </button>
+            </div>
+            <button 
+              onClick={() => setShowSettings(false)}
+              className="mt-4 bg-surface-variant text-on-surface font-label-bold py-2 rounded-lg hover:bg-surface-bright transition-all text-sm"
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

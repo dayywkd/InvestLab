@@ -1,0 +1,93 @@
+              const count = updatedPlayers[k].stocks.Infrastruktur || 0;
+              if (count > 0) {
+                updatedPlayers[k].coins += count;
+                logMsg += `${updatedPlayers[k].name} mendapat +${count}🪙. `;
+              }
+            });
+
+            return {
+              players: updatedPlayers,
+              logs: [logMsg].concat(state.logs)
+            };
+          });
+        } 
+        
+        else if (sector === 'Industri') {
+          // Efek Industrial Boom: Ronde berikutnya semua kenaikan Industri mendapat +1 tambahan
+          set({
+            industrialBoomActive: true,
+            logs: ['Efek Industrial Boom diaktifkan: Kenaikan harga Industri ronde berikutnya mendapat +1 tambahan.'].concat(get().logs)
+          });
+        }
+      }
+    },
+
+    // Trigger Fase 4: Pembukaan Kartu Ekonomi Sektor
+    triggerEconomyReveal: () => {
+      const { economyDecks, turn, prices } = get();
+      const activeCards = {};
+      const changes = { Properti: 0, Infrastruktur: 0, Industri: 0, Consumer: 0 };
+      let lastEvent = null;
+
+      // 1. Tarik kartu ekonomi teratas dari 4 dek sektor
+      const updatedDecks = { ...economyDecks };
+      Object.keys(ECONOMY_POOLS).forEach(sector => {
+        const deck = economyDecks[sector];
+        if (deck && deck.length > 0) {
+          activeCards[sector] = deck[0];
+          updatedDecks[sector] = deck.slice(1);
+  
+<truncated 6272 bytes>
+ve();
+      }
+    },
+
+    // Likuidasi Otomatis Semua Sisa Saham di Portofolio Pemain
+    liquidateAllStocks: () => {
+      const { players, prices } = get();
+      const finalPlayers = { ...players };
+
+      Object.keys(finalPlayers).forEach(k => {
+        const player = finalPlayers[k];
+        let totalRevenue = 0;
+
+        // Likuidasi Saham Sektor
+        Object.keys(player.stocks).forEach(sector => {
+          const count = player.stocks[sector];
+          const price = prices[sector];
+          totalRevenue += count * price;
+          player.stocks[sector] = 0;
+        });
+
+        // Likuidasi Reksa Dana
+        const mfCount = player.mutualFunds;
+        totalRevenue += mfCount * prices.ReksaDana;
+        player.mutualFunds = 0;
+
+        // Tambahkan koin hasil likuidasi
+        player.coins += totalRevenue;
+
+        // Hitung denda utang: denda -15 koin per unit utang
+        const debtPenalty = player.debtCards * 15;
+        player.coins -= debtPenalty;
+
+        // Catat net worth akhir
+        player.netWorth = Math.max(0, player.coins);
+      });
+
+      set({
+        players: finalPlayers,
+        phase: 'GAMEOVER',
+        logs: ['Permainan Selesai. Likuidasi seluruh sisa saham portofolio dan penalti utang dihitung.'].concat(get().logs)
+      });
+
+      // Bersihkan penyimpanan lokal setelah selesai agar tidak me-resume game yang sudah tamat
+      localStorage.removeItem('investlab_game_state');
+    },
+
+    // Menyimpan State ke Local Storage
+    save: () => {
+      saveToLocalStorage(get());
+    }
+  };
+});

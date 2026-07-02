@@ -1,0 +1,62 @@
+import React, { useState } from 'react';
+
+export default function GameLobby({ onStartGame, onBack }) {
+  const [activeTab, setActiveTab] = useState('join'); // 'join' or 'create'
+  const [roomCode, setRoomCode] = useState('');
+
+  return (
+    <div className="bg-background text-on-surface font-body-md antialiased pb-24 md:pb-0 min-h-screen ambient-gradient select-none w-full">
+      {/* TopAppBar */}
+      <header className="w-full top-0 sticky shadow-md border-b-2 border-outline-variant bg-surface-container z-40">
+        <div className="flex justify-between items-center px-md py-xs w-full max-w-7xl mx-auto">
+          <button 
+            onClick={onBack}
+            className="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-bright transition-all"
+          >
+            <span className="material-symbols-outlined text-md">arrow_back</span>
+          </button>
+          <h1 className="font-display-lg text-display-lg text-primary uppercase tracking-tighter">StockLab</h1>
+          <div className="flex items-center gap-xs text-primary dark:text-primary font-label-bold text-label-bold bg-surface-variant px-sm py-base rounded-full border border-outline-variant shadow-inner">
+            1.2M 🪙
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg grid grid-cols-1 lg:grid-cols-12 gap-lg mt-2">
+
+<truncated 14258 bytes>
+elative opacity-70">
+                    <div className="w-4 h-4 bg-surface rounded-full absolute right-1 top-1"></div>
+                  </div>
+                </div>
+              </div>
+              <button 
+                onClick={onStartGame}
+                className="w-full btn-glossy bg-primary rounded-lg py-sm px-md flex items-center justify-center gap-xs text-on-primary mt-md text-xs"
+              >
+                <span className="font-label-bold text-label-bold uppercase">Create & Start</span>
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* BottomNavBar (Mobile Only) */}
+      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-4 pt-2 bg-surface-container dark:bg-surface-container border-t-2 border-outline-variant shadow-[0_-4px_12px_rgba(0,0,0,0.3)] rounded-t-xl md:hidden">
+        <a 
+          onClick={(e) => { e.preventDefault(); onBack(); }}
+          className="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:bg-surface-bright px-4 py-1 rounded-xl"
+          href="#"
+        >
+          <span className="material-symbols-outlined">home</span>
+          <span className="font-label-sm text-label-sm uppercase mt-1">Home</span>
+        </a>
+        <a className="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1 shadow-[inset_0_2px_4px_rgba(255,255,255,0.2)] active:scale-95 transition-transform duration-150" href="#">
+          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>sports_esports</span>
+          <span className="font-label-sm text-label-sm uppercase mt-1">Match</span>
+        </a>
+      </nav>
+    </div>
+  );
+}
