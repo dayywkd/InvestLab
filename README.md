@@ -1,4 +1,3 @@
-```markdown
 # 📈 InvestLab - Capital Market Simulation Game
 
 **InvestLab** adalah game simulasi bursa efek dan transaksi pasar modal berbasis kartu hibrida. Pemain akan bersaing melawan dua bot AI (**Wira** dan **Citra**) untuk membangun kekayaan bersih (*Net Worth*) tertinggi melalui 6 ronde permainan yang penuh strategi, fluktuasi pasar, dan manipulasi informasi.
