@@ -579,9 +579,9 @@ export default function GameScreen() {
                     <span className="font-outfit font-bold text-sm text-[#F4EFE2] block">{p.name}</span>
                     <span className="font-mono text-[10px] text-[#4A9B6E] font-bold">{p.coins} Koin</span>
                   </div>
-                  {p.debtCount > 0 && (
+                  {p.debtCards > 0 && (
                     <span className="bg-[#C1453A]/20 text-[#C1453A] border border-[#C1453A]/40 font-mono text-[9px] font-bold px-1.5 py-0.5 rounded-full">
-                      🔴 {p.debtCount} Utang
+                      🔴 {p.debtCards} Utang
                     </span>
                   )}
                 </div>
@@ -655,10 +655,10 @@ export default function GameScreen() {
           </div>
 
           <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full font-mono font-bold text-xs ${
-            players.user.debtCount > 0 ? 'bg-[#C1453A]/20 text-[#C1453A] border border-[#C1453A]/40' : 'bg-[#262920] text-[#9C9884]'
+            players.user.debtCards > 0 ? 'bg-[#C1453A]/20 text-[#C1453A] border border-[#C1453A]/40' : 'bg-[#262920] text-[#9C9884]'
           }`}>
             <span>🔴</span>
-            <span>{players.user.debtCount}</span>
+            <span>{players.user.debtCards}</span>
           </div>
         </div>
       </header>

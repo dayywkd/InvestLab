@@ -17,7 +17,7 @@ export default function GameOverScreen({ onPlayAgain, onBackToHome }) {
   const user = players.user;
 
   // Rincian Breakdown Net Worth User
-  const userDebtPenalty = user.debtCount * 15;
+  const userDebtPenalty = user.debtCards * 15;
   const userNetWorth = user.netWorth ?? (user.coins - userDebtPenalty);
   const userLiquidatedAssets = userNetWorth + userDebtPenalty;
 
@@ -75,7 +75,7 @@ export default function GameOverScreen({ onPlayAgain, onBackToHome }) {
                       {player.name} {isUser && '(Anda)'}
                     </span>
                     <span className="font-mono text-[10px] opacity-75">
-                      🔴 {player.debtCount} Utang
+                      🔴 {player.debtCards} Utang
                     </span>
                   </div>
                 </div>
@@ -103,7 +103,7 @@ export default function GameOverScreen({ onPlayAgain, onBackToHome }) {
               <span className="font-bold text-[#F4EFE2]">{userLiquidatedAssets} Koin</span>
             </div>
             <div className="flex justify-between items-center text-[#C1453A]">
-              <span>Denda Utang ({user.debtCount} Kartu × 15 Koin):</span>
+              <span>Denda Utang ({user.debtCards} Kartu × 15 Koin):</span>
               <span className="font-bold">-{userDebtPenalty} Koin</span>
             </div>
             <div className="flex justify-between items-center pt-2 border-t border-[#262920] text-[#D4A24C] font-outfit text-sm font-bold">
