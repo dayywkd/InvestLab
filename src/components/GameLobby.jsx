@@ -40,10 +40,13 @@ export default function GameLobby({ onStartGame, onBack }) {
             {/* Player 1 (You) */}
             <div className="flex flex-col items-center gap-2">
               <div className="relative">
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#262920] border-2 border-[#E8622C] flex items-center justify-center shadow-[0_0_16px_rgba(232,98,44,0.3)]">
-                  <span className="material-symbols-outlined text-3xl md:text-4xl text-[#F4EFE2]" style={{ fontVariationSettings: "'FILL' 1" }}>person</span>
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-[#2C2E27] to-[#171813] border-2 border-[#E8622C] flex items-center justify-center shadow-[0_0_16px_rgba(232,98,44,0.3)] relative overflow-hidden">
+                  <div className="absolute inset-0 bg-white/5 pointer-events-none rounded-full"></div>
+                  <svg className="w-9 h-9 md:w-11 md:h-11 text-[#E8622C]" viewBox="0 0 24 24" fill="currentColor">
+                    <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A9.75 9.75 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+                  </svg>
                 </div>
-                <span className="absolute -bottom-1 -right-1 bg-[#E8622C] text-[#12130F] font-outfit font-bold text-[9px] px-1.5 rounded-full">
+                <span className="absolute -bottom-1 -right-1 bg-[#E8622C] text-[#12130F] font-outfit font-bold text-[9px] px-1.5 py-0.5 rounded-full border border-[#12130F]">
                   YOU
                 </span>
               </div>
@@ -56,10 +59,11 @@ export default function GameLobby({ onStartGame, onBack }) {
             {/* Player 2 (Bot Wira) */}
             <div className="flex flex-col items-center gap-2">
               <div className="relative">
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#262920] border-2 border-[#3D7CA6] flex items-center justify-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-[#2C2E27] to-[#171813] border-2 border-[#3D7CA6] flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-white/5 pointer-events-none rounded-full"></div>
                   <span className="material-symbols-outlined text-3xl md:text-4xl text-[#3D7CA6]" style={{ fontVariationSettings: "'FILL' 1" }}>smart_toy</span>
                 </div>
-                <span className="absolute -bottom-1 -right-1 bg-[#3D7CA6] text-[#F4EFE2] font-mono font-bold text-[8px] px-1.5 rounded-full uppercase">
+                <span className="absolute -bottom-1 -right-1 bg-[#3D7CA6] text-[#F4EFE2] font-mono font-bold text-[8px] px-1.5 py-0.5 rounded-full border border-[#12130F] uppercase">
                   BOT
                 </span>
               </div>
@@ -72,10 +76,11 @@ export default function GameLobby({ onStartGame, onBack }) {
             {/* Player 3 (Bot Citra) */}
             <div className="flex flex-col items-center gap-2">
               <div className="relative">
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#262920] border-2 border-[#8A6BAE] flex items-center justify-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-[#2C2E27] to-[#171813] border-2 border-[#8A6BAE] flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-white/5 pointer-events-none rounded-full"></div>
                   <span className="material-symbols-outlined text-3xl md:text-4xl text-[#8A6BAE]" style={{ fontVariationSettings: "'FILL' 1" }}>smart_toy</span>
                 </div>
-                <span className="absolute -bottom-1 -right-1 bg-[#8A6BAE] text-[#F4EFE2] font-mono font-bold text-[8px] px-1.5 rounded-full uppercase">
+                <span className="absolute -bottom-1 -right-1 bg-[#8A6BAE] text-[#F4EFE2] font-mono font-bold text-[8px] px-1.5 py-0.5 rounded-full border border-[#12130F] uppercase">
                   BOT
                 </span>
               </div>

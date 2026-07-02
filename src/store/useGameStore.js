@@ -1323,6 +1323,34 @@ export const useGameStore = create((set, get) => {
       const coinReward = Math.floor(userNetWorth * 100); // 1 koin game = 100 koin global
       const expReward = Math.floor(userNetWorth * 5);
 
+      // Tambahkan riwayat match ke localStorage
+      try {
+        const historyData = localStorage.getItem('investlab_match_history');
+        const historyList = historyData ? JSON.parse(historyData) : [];
+        
+        // Cari urutan user
+        const playerRankList = Object.keys(finalPlayers).map(key => ({
+          key,
+          ...finalPlayers[key]
+        }));
+        playerRankList.sort((a, b) => b.netWorth - a.netWorth);
+        const userRank = playerRankList.findIndex(p => p.key === 'user') + 1;
+
+        const newMatchEntry = {
+          id: Date.now(),
+          date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+          netWorth: userNetWorth,
+          coins: finalPlayers.user.coins,
+          debtCards: finalPlayers.user.debtCards,
+          rank: userRank
+        };
+
+        historyList.unshift(newMatchEntry);
+        localStorage.setItem('investlab_match_history', JSON.stringify(historyList.slice(0, 10)));
+      } catch (e) {
+        console.error('Gagal mencatat riwayat match', e);
+      }
+
       set((state) => {
         let newExp = state.userExp + expReward;
         let newLevel = state.userLevel;

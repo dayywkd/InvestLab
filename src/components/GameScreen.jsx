@@ -666,8 +666,19 @@ export default function GameScreen() {
 
         {/* Status Indicators: Saldo Koin & Debt Counter */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 bg-[#12130F] border border-[#262920] px-3 py-1 rounded-full">
-            <span className="material-symbols-outlined text-[#D4A24C] text-sm">payments</span>
+          <div className="flex items-center gap-1.5 bg-[#12130F] border border-[#262920] px-3 py-1 rounded-full shadow-inner">
+            <svg className="w-3.5 h-3.5 text-[#D4A24C]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" fill="url(#goldGradientGameHeader)" stroke="#D4A24C" strokeWidth="1.5" />
+              <circle cx="12" cy="12" r="7" fill="none" stroke="#D4A24C" strokeWidth="1" strokeDasharray="2 2" />
+              <path d="M12 7V17M9 10H14C15 10 15 12 14 12C13 12 11 12 10 12C9 12 9 14 10 14H15" stroke="#D4A24C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <defs>
+                <linearGradient id="goldGradientGameHeader" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#FFEAA7" />
+                  <stop offset="50%" stopColor="#D4A24C" />
+                  <stop offset="100%" stopColor="#8A601B" />
+                </linearGradient>
+              </defs>
+            </svg>
             <span className="font-mono font-bold text-xs text-[#4A9B6E]">{players.user.coins}</span>
           </div>
 

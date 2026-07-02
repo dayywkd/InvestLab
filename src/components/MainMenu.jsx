@@ -12,6 +12,7 @@ export default function MainMenu({ onPlay, onResetState }) {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [leaderboardData, setLeaderboardData] = useState([]);
+  const [matchHistory, setMatchHistory] = useState([]);
 
   // Fetch leaderboard when modal opened
   useEffect(() => {
@@ -24,6 +25,23 @@ export default function MainMenu({ onPlay, onResetState }) {
     }
   }, [showLeaderboard]);
 
+  // Fetch match history when modal opened
+  useEffect(() => {
+    if (showHistory) {
+      try {
+        const data = localStorage.getItem('investlab_match_history');
+        if (data) {
+          const parsed = JSON.parse(data);
+          setTimeout(() => setMatchHistory(parsed), 0);
+        } else {
+          setTimeout(() => setMatchHistory([]), 0);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, [showHistory]);
+
   const formatCoins = (coins) => {
     if (coins >= 1000000) return (coins / 1000000).toFixed(1) + 'M';
     if (coins >= 1000) return (coins / 1000).toFixed(1) + 'K';
@@ -35,22 +53,38 @@ export default function MainMenu({ onPlay, onResetState }) {
       {/* Lightweight Header (design.md Section 2) */}
       <header className="flex items-center justify-between py-2 border-b border-[#262920]">
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => setShowProfile(true)}>
-          <div className="relative">
-            <div className="w-9 h-9 rounded-full bg-[#262920] border border-[#E8622C] flex items-center justify-center">
-              <span className="material-symbols-outlined text-xl text-[#F4EFE2]" style={{ fontVariationSettings: "'FILL' 1" }}>person</span>
+          {/* Premium Glowing Avatar (User) */}
+          <div className="relative flex items-center justify-center">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#2C2E27] to-[#171813] border border-[#D4A24C] flex items-center justify-center shadow-lg relative overflow-hidden">
+              <div className="absolute inset-0 bg-white/5 pointer-events-none rounded-full"></div>
+              <svg className="w-5 h-5 text-[#9C9884] transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A9.75 9.75 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+              </svg>
             </div>
-            <span className="absolute -bottom-1 -right-1 bg-[#D4A24C] text-[#12130F] font-outfit font-bold text-[9px] px-1 rounded-full">
+            <span className="absolute -bottom-1 -right-1 bg-[#D4A24C] text-[#12130F] font-outfit font-bold text-[9px] px-1 rounded-full border border-[#12130F] leading-none shadow-md">
               L{userLevel}
             </span>
           </div>
           <h1 className="font-outfit text-2xl font-black uppercase tracking-tight text-[#F4EFE2]">
-            STOCK<span className="text-[#E8622C]">LAB</span>
+            INVEST<span className="text-[#E8622C]">LAB</span>
           </h1>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 bg-[#1C1E17] border border-[#262920] px-3 py-1 rounded-full">
-            <span className="material-symbols-outlined text-[#D4A24C] text-base">payments</span>
+          {/* Premium Gold Coin */}
+          <div className="flex items-center gap-1.5 bg-[#1C1E17] border border-[#262920] px-3 py-1 rounded-full shadow-inner">
+            <svg className="w-3.5 h-3.5 text-[#D4A24C]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" fill="url(#goldGradientHeader)" stroke="#D4A24C" strokeWidth="1.5" />
+              <circle cx="12" cy="12" r="7" fill="none" stroke="#D4A24C" strokeWidth="1" strokeDasharray="2 2" />
+              <path d="M12 7V17M9 10H14C15 10 15 12 14 12C13 12 11 12 10 12C9 12 9 14 10 14H15" stroke="#D4A24C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <defs>
+                <linearGradient id="goldGradientHeader" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#FFEAA7" />
+                  <stop offset="50%" stopColor="#D4A24C" />
+                  <stop offset="100%" stopColor="#8A601B" />
+                </linearGradient>
+              </defs>
+            </svg>
             <span className="font-mono font-bold text-xs text-[#4A9B6E]">{formatCoins(userGlobalCoins)}</span>
           </div>
           <button
@@ -159,7 +193,7 @@ export default function MainMenu({ onPlay, onResetState }) {
 
       {/* Footer Status Summary */}
       <footer className="text-center py-2 text-[10px] text-[#9C9884] uppercase tracking-widest border-t border-[#262920]/50 font-mono">
-        StockLab Market Terminal v1.1 • Client-Side Offline Mode
+        InvestLab Market Terminal v1.1 • Client-Side Offline Mode
       </footer>
 
       {/* Tutorial Modal */}
@@ -167,7 +201,7 @@ export default function MainMenu({ onPlay, onResetState }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
           <div className="absolute inset-0 bg-black/75 backdrop-blur-sm animate-fade-in" onClick={() => setShowTutorial(false)}></div>
           <div className="relative bg-[#1C1E17] rounded-2xl border border-[#262920] p-5 shadow-2xl max-w-[420px] w-full flex flex-col max-h-[85vh] z-50 animate-scale-up">
-            <h3 className="font-outfit text-lg font-bold text-[#E8622C] uppercase border-b border-[#262920] pb-2">Panduan Pasar StockLab</h3>
+            <h3 className="font-outfit text-lg font-bold text-[#E8622C] uppercase border-b border-[#262920] pb-2">Panduan Pasar InvestLab</h3>
             <div className="font-inter text-[#9C9884] space-y-3 mt-3 text-xs leading-relaxed overflow-y-auto pr-1">
               <p><strong className="text-[#F4EFE2]">Tujuan Game:</strong> Hasilkan Net Worth tertinggi di akhir Ronde 6 melalui perputaran modal bursa.</p>
               <p><strong className="text-[#F4EFE2]">1. Fase Bidding:</strong> Tawar koin secara rahasia untuk merebut giliran jalan pertama.</p>
@@ -232,9 +266,34 @@ export default function MainMenu({ onPlay, onResetState }) {
           <div className="absolute inset-0 bg-black/75 backdrop-blur-sm animate-fade-in" onClick={() => setShowHistory(false)}></div>
           <div className="relative bg-[#1C1E17] rounded-2xl border border-[#262920] p-5 shadow-2xl max-w-[400px] w-full flex flex-col z-50 animate-scale-up">
             <h3 className="font-outfit text-lg font-bold text-[#3D7CA6] uppercase border-b border-[#262920] pb-2">Riwayat Match</h3>
-            <div className="text-center py-8 text-[#9C9884]">
-              <span className="material-symbols-outlined text-4xl mb-2 opacity-40">history</span>
-              <p className="text-xs">Belum ada catatan transaksi pertandingan.</p>
+            <div className="py-4 overflow-y-auto max-h-[300px] hide-scrollbar space-y-2">
+              {matchHistory.length === 0 ? (
+                <div className="text-center py-8 text-[#9C9884]">
+                  <span className="material-symbols-outlined text-4xl mb-2 opacity-40">history</span>
+                  <p className="text-xs">Belum ada catatan transaksi pertandingan.</p>
+                </div>
+              ) : (
+                matchHistory.map((match) => (
+                  <div key={match.id} className="bg-[#262920] border border-[#262920]/60 rounded-xl p-3 flex justify-between items-center text-xs">
+                    <div>
+                      <span className="font-mono text-[9px] text-[#9C9884] block">{match.date}</span>
+                      <span className="font-outfit font-bold text-[#F4EFE2] mt-0.5 block">
+                        Net Worth: <span className="font-mono text-[#4A9B6E]">{match.netWorth} Koin</span>
+                      </span>
+                      <span className="font-mono text-[10px] text-[#C1453A] mt-0.5 block">
+                        🔴 {match.debtCards} Utang
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className={`font-outfit font-black text-sm px-2 py-0.5 rounded-md ${
+                        match.rank === 1 ? 'bg-[#D4A24C]/20 text-[#D4A24C] border border-[#D4A24C]/40' : 'bg-[#262920] text-[#9C9884] border border-transparent'
+                      }`}>
+                        #{match.rank}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
             <button
               onClick={() => setShowHistory(false)}
@@ -284,10 +343,13 @@ export default function MainMenu({ onPlay, onResetState }) {
             <h3 className="font-outfit text-lg font-bold text-[#E8622C] uppercase border-b border-[#262920] pb-2">Profil Investor</h3>
             <div className="flex flex-col items-center gap-3 py-3">
               <div className="relative">
-                <div className="w-16 h-16 rounded-full bg-[#262920] border-2 border-[#E8622C] flex items-center justify-center shadow-md">
-                  <span className="material-symbols-outlined text-4xl text-[#9C9884]" style={{ fontVariationSettings: "'FILL' 1" }}>person</span>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#2C2E27] to-[#171813] border-2 border-[#D4A24C] flex items-center justify-center shadow-2xl relative overflow-hidden">
+                  <div className="absolute inset-0 bg-white/5 pointer-events-none rounded-full"></div>
+                  <svg className="w-9 h-9 text-[#D4A24C]" viewBox="0 0 24 24" fill="currentColor">
+                    <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A9.75 9.75 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+                  </svg>
                 </div>
-                <span className="absolute -bottom-1 -right-1 bg-[#D4A24C] text-[#12130F] font-outfit font-bold text-[10px] px-1.5 rounded-full">
+                <span className="absolute -bottom-1 -right-1 bg-[#D4A24C] text-[#12130F] font-outfit font-bold text-[10px] px-2 py-0.5 rounded-full border border-[#12130F] shadow-lg">
                   L{userLevel}
                 </span>
               </div>

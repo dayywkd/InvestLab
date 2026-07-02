@@ -37,7 +37,7 @@ export default function SplashScreen({ onStart }) {
             <span className="material-symbols-outlined text-[#E8622C] text-5xl">candlestick_chart</span>
           </div>
           <h1 className="font-outfit text-4xl md:text-5xl font-extrabold uppercase tracking-tight text-[#F4EFE2]">
-            STOCK<span className="text-[#E8622C]">LAB</span>
+            INVEST<span className="text-[#E8622C]">LAB</span>
           </h1>
           <p className="font-inter text-xs md:text-sm text-[#9C9884] tracking-wider uppercase mt-1 font-medium">
             Market Terminal Simulation
